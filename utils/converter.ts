@@ -10,6 +10,7 @@ export const findHtmlsIn = async (contents: string[]): Promise<string[]> => {
   const htmls: string[] = []
 
   for (const content of contents) {
+    //const inlineUMLs = content.match(/`{3}plantuml{1}(.|\n)*?`{3}/g)
     htmls.push(await convertMarkdownToHtml(content))
   }
 

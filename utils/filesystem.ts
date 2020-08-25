@@ -55,3 +55,9 @@ export const findAllMarkdownsIn = async (paths: string[]): Promise<string[]> => 
 
   return markdowns
 }
+
+export const setImage = (name: string) => async (chunk: string): Promise<string> => {
+  fs.writeFile(`./public/images/${name}.svg`, chunk)
+  
+  return `![Image](./public/images/${name}.svg)`
+}

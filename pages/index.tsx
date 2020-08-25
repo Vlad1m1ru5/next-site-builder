@@ -58,10 +58,7 @@ export default IndexPage
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const base = './docs'
-  const directoriesPaths = await findAllDirectoriesPathsFor(base)
-  
-  console.log(directoriesPaths)
-  
+  const directoriesPaths = await findAllDirectoriesPathsFor(base)  
   const markdowns = await findAllMarkdownsIn(directoriesPaths)
   const contents =  findAllContentsIn(markdowns)
   const htmls = await findHtmlsIn(contents)

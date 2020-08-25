@@ -1,5 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
+import { findAllDirectoriesPathsFor } from 'utils/filesystem'
+import { GetStaticProps } from 'next'
 
 const IndexPage: React.FunctionComponent = () => (
   <>
@@ -27,3 +29,15 @@ const IndexPage: React.FunctionComponent = () => (
 )
 
 export default IndexPage
+
+export const getStaticProps: GetStaticProps = async () => {
+  const base = './docs'
+  const directoriesPaths = await findAllDirectoriesPathsFor(base)
+  console.log(directoriesPaths)
+  
+  return {
+    props: {
+      paths: directoriesPaths
+    }
+  }
+}

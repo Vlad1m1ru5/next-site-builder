@@ -25,3 +25,33 @@ export const findAllDirectoriesPathsFor = async (root: string): Promise<string[]
 
   return paths
 }
+
+const findAllFilesFor = async (path: string): Promise<Dirent[]> => {
+  const entries = await findAllDirentsFor(path)
+
+  return entries
+    .filter((entry) => entry.isFile())
+}
+
+const findIndexIn = (files: Dirent[]): Dirent | undefined => {
+  return files.find((file) => file.name === 'index.md')
+}
+
+export const findAllMarkdownsIn = async (paths: string[]): Promise<string[]> => {
+  const markdowns: string[] = []
+
+  for (const path of paths) {
+    const files = await findAllFilesFor(path)
+    
+    const index = findIndexIn(files)
+    
+    if (index !== undefined) {
+      const indexFile = `${path}/${getDirentName(index)}`
+      
+      const file = await fs.readFile(indexFile, 'utf-8')
+      markdowns.push(file)
+    }
+  }
+
+  return markdowns
+}

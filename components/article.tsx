@@ -4,9 +4,10 @@ type Props = {
   headline: string
 }
 
-const Article: React.FunctionComponent<Props> = ({ headline }) => (
+const Article: React.FunctionComponent<Props> = ({ headline, children }) => (
   <article>
     <h3>{headline}</h3>
+    <div>{children}</div>
   </article>
 )
 

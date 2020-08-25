@@ -1,20 +1,25 @@
 import React from 'react'
 import Head from 'next/head'
-import { findAllDirectoriesPathsFor } from 'utils/filesystem'
+import { findAllDirectoriesPathsFor, findAllMarkdownsIn } from 'utils/filesystem'
 import { GetStaticProps } from 'next'
 import Article from 'components/article'
+import { findAllContentsIn } from 'utils/parser'
+import { findHtmlsIn } from 'utils/converter'
+import Markdown from 'components/markdown'
 
 type Props = {
-  paths: string[]
+  htmls: string[]
 }
 
-const IndexPage: React.FunctionComponent<Props> = ({ paths }) => {
+const IndexPage: React.FunctionComponent<Props> = ({ htmls }) => {
   
-  const getArticle = (path: string, index: number) => (
+  const getArticle = (html: string, index: number) => (
     <Article 
       key={index}
-      headline={path}
-    />
+      headline={''}
+    >
+      <Markdown content={html}/>
+    </Article>
   )
 
   return (
@@ -31,7 +36,7 @@ const IndexPage: React.FunctionComponent<Props> = ({ paths }) => {
       </header>
       <main>
         <h2>Index Page Content</h2>
-        {paths
+        {htmls
           .map(getArticle)}
       </main>
       <footer>
@@ -54,11 +59,16 @@ export default IndexPage
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const base = './docs'
   const directoriesPaths = await findAllDirectoriesPathsFor(base)
+  
   console.log(directoriesPaths)
   
+  const markdowns = await findAllMarkdownsIn(directoriesPaths)
+  const contents =  findAllContentsIn(markdowns)
+  const htmls = await findHtmlsIn(contents)
+
   return {
     props: {
-      paths: directoriesPaths
+      htmls
     }
   }
 }

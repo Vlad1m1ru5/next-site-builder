@@ -37,21 +37,16 @@ const findIndexIn = (files: Dirent[]): Dirent | undefined => {
   return files.find((file) => file.name === 'index.md')
 }
 
-export const findAllMarkdownsIn = async (paths: string[]): Promise<string[]> => {
-  const markdowns: string[] = []
-
-  for (const path of paths) {
-    const files = await findAllFilesFor(path)
+export const findAllMarkdownsFor = async (path: string): Promise<string> => {
+  const files = await findAllFilesFor(path)
+  const index = findIndexIn(files)
+  
+  if (index !== undefined) {
+    const indexFile = `${path}/${getDirentName(index)}`
     
-    const index = findIndexIn(files)
-    
-    if (index !== undefined) {
-      const indexFile = `${path}/${getDirentName(index)}`
-      
-      const file = await fs.readFile(indexFile, 'utf-8')
-      markdowns.push(file)
-    }
+    const file = await fs.readFile(indexFile, 'utf-8')
+    return file
   }
 
-  return markdowns
+  return ''
 }

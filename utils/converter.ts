@@ -7,13 +7,7 @@ export const convertMarkdownToHtml = async (markdown: string): Promise<string> =
   return result.toString()
 }
 
-export const findHtmlsIn = async (contents: string[]): Promise<string[]> => {
-  const htmls: string[] = []
-
-  for (const content of contents) {
-    const markdown = await getWithSvg(content)
-    htmls.push(await convertMarkdownToHtml(markdown))
-  }
-
-  return htmls
+export const convertToHtml = async (content: string): Promise<string> => {
+  const markdown = await getWithSvg(content)
+  return await convertMarkdownToHtml(markdown)
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
-import { findAllDirectoriesPathsFor, findAllMarkdownsIn } from 'utils/filesystem'
+import { findAllDirectoriesPathsFor, findAllMarkdownsFor } from 'utils/filesystem'
 import { GetStaticProps } from 'next'
 import Article from 'components/article'
-import { findAllContentsIn } from 'utils/parser'
-import { findHtmlsIn } from 'utils/converter'
+import { parseMarkdownContent } from 'utils/parser'
+import { convertToHtml } from 'utils/converter'
 import Markdown from 'components/markdown'
 
 type Props = {
@@ -58,10 +58,14 @@ export default IndexPage
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const base = './docs'
-  const directoriesPaths = await findAllDirectoriesPathsFor(base)  
-  const markdowns = await findAllMarkdownsIn(directoriesPaths)
-  const contents =  findAllContentsIn(markdowns)
-  const htmls = await findHtmlsIn(contents)
+  const htmls: string[] = []
+  const directoriesPaths = await findAllDirectoriesPathsFor(base)
+
+  for (const directoryPath of directoriesPaths) {  
+    const markdown = await findAllMarkdownsFor(directoryPath)
+    const content = parseMarkdownContent(markdown)
+    htmls.push(await convertToHtml(content))
+  }
 
   return {
     props: {

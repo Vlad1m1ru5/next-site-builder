@@ -55,22 +55,3 @@ export const findAllMarkdownsIn = async (paths: string[]): Promise<string[]> => 
 
   return markdowns
 }
-
-export const setImage = (name: string) => async (chunk: string): Promise<void> => {
-  await fs.writeFile(`./public/images/diagrams/${name}.svg`, chunk)
-}
-
-export const findImage = async (): Promise<string> => {
-  const images = await findAllFilesFor('./public/images/diagrams/')
-  const image = images
-    .sort()
-    .map((image) => image.name)
-    .map(name => name.replace(/\.svg$/, ''))
-    .slice(-1)[0]
-
-  if (!image) {
-    return 'NewImg'
-  }
-
-  return image.concat('NewImg')
-}

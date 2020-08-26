@@ -1,5 +1,4 @@
 import { PlantUmlPipe } from 'plantuml-pipe'
-import { setImage, findImage } from 'utils/filesystem'
 
 const getImage = async (uml: string): Promise<string> => {
   let image = ''

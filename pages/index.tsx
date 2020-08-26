@@ -64,9 +64,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
   for (const directoryPath of directoriesPaths) {  
     const markdown = await findAllMarkdownsFor(directoryPath)
-    const content = parseMarkdownContent(markdown)
-    const contentWithSvg = await getWithSvg(content)
-    htmls.push(await convertMarkdownToHtml(contentWithSvg))
+    const content = await getWithSvg(parseMarkdownContent(markdown))
+    const html = await convertMarkdownToHtml(content)
+    htmls.push(html)
   }
 
   return {

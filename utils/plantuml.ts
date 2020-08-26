@@ -17,8 +17,6 @@ const getImage = async (uml: string): Promise<string> => {
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       if (isDone) {
-        console.log('image: ', image)
-        
         resolve(image)
         clearInterval(interval)
       }
@@ -44,5 +42,5 @@ export const getWithSvg = async (content: string): Promise<string> => {
     result = content.replace(/```plantuml(\n)(.|\n)*`{3}(\n)/, image)
   }
 
-  return result
+  return result || content
 }

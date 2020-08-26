@@ -4,8 +4,9 @@ import { findAllDirectoriesPathsFor, findAllMarkdownsFor } from 'utils/filesyste
 import { GetStaticProps } from 'next'
 import Article from 'components/article'
 import { parseMarkdownContent } from 'utils/parser'
-import { convertToHtml } from 'utils/converter'
+import { convertMarkdownToHtml } from 'utils/converter'
 import Markdown from 'components/markdown'
+import { getWithSvg } from 'utils/plantuml'
 
 type Props = {
   htmls: string[]
@@ -64,7 +65,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   for (const directoryPath of directoriesPaths) {  
     const markdown = await findAllMarkdownsFor(directoryPath)
     const content = parseMarkdownContent(markdown)
-    htmls.push(await convertToHtml(content))
+    const contentWithSvg = await getWithSvg(content)
+    htmls.push(await convertMarkdownToHtml(contentWithSvg))
   }
 
   return {
